@@ -13,6 +13,11 @@ resource "aws_vpc" "my_vpc" {
   }
 }
 
+# Create an Internet Gateway
+resource "aws_internet_gateway" "my_igw" {
+  vpc_id = aws_vpc.my_vpc.id
+}
+
 # Create a public subnet within the VPC
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.my_vpc.id
@@ -30,28 +35,42 @@ resource "aws_security_group" "ssh_sg" {
   description = "Allow SSH inbound traffic"
   vpc_id      = aws_vpc.my_vpc.id
 
-  # Allow SSH access from your IP address (change the CIDR block to your IP)
+  # Allow SSH access from anywhere (not recommended for production)
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Replace with your IP address
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
-# Launch an EC2 instance in the public subnet
+# Create a route table and add a default route to the Internet Gateway
+resource "aws_route_table" "my_route_table" {
+  vpc_id = aws_vpc.my_vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.my_igw.id
+  }
+}
+
+# Associate the route table with the public subnet
+resource "aws_route_table_association" "my_subnet_association" {
+  subnet_id      = aws_subnet.public_subnet.id
+  route_table_id = aws_route_table.my_route_table.id
+}
+
 # Launch an EC2 instance in the public subnet
 resource "aws_instance" "TechnoaHI" {
   ami           = "ami-053b0d53c279acc90"  # Replace with the Ubuntu AMI ID
   instance_type = "t2.micro"
-  subnet_id     = aws_subnet.public_subnet.id  # Specify the subnet here
+  subnet_id     = aws_subnet.public_subnet.id
   key_name      = "north"
-  security_groups = [aws_security_group.ssh_sg.name]  # Attach the SSH security group
+  security_groups = [aws_security_group.ssh_sg.name]
   tags = {
     Name = "TechnoaHI"
   }
 }
-
 
 # Output the public IP address of the EC2 instance for reference
 output "public_ip" {
