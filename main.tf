@@ -40,7 +40,7 @@ resource "aws_security_group" "ssh_sg" {
 
 # Launch an EC2 instance in the public subnet
 resource "aws_instance" "my_instance" {
-  ami           = "ami-xxxxxxxxxxxxxxxxx"  # Replace with the correct AMI ID
+  ami           = "ami-051f7e7f6c2f40dc1"  # Replace with the correct AMI ID
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public_subnet.id  # Specify the subnet here
 
