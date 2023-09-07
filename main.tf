@@ -35,7 +35,7 @@ resource "aws_security_group" "ssh_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["YOUR_IP_ADDRESS/32"]  # Replace with your IP address
+    cidr_blocks = ["103.228.221.157/32"]  # Replace with your IP address
   }
 }
 
