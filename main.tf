@@ -30,37 +30,28 @@ resource "aws_security_group" "ssh_sg" {
   description = "Allow SSH inbound traffic"
   vpc_id      = aws_vpc.my_vpc.id
 
-  resource "aws_route_table" "public_route_table" {
-  vpc_id = aws_vpc.my_vpc.id
-
-  route {
-    cidr_block = "0.0.0.0/0"  # Redirect all traffic
-    gateway_id = aws_internet_gateway.my_igw.id
-  }
-}
-
-resource "aws_route_table_association" "public_route_association" {
-  subnet_id      = aws_subnet.public_subnet.id
-  route_table_id = aws_route_table.public_route_table.id
-}
-
-
+  # Allow SSH access from your IP address (change the CIDR block to your IP)
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["YOUR_IP_ADDRESS/32"]  # Replace with your IP address
   }
 }
 
 # Launch an EC2 instance in the public subnet
 resource "aws_instance" "TechnoaHI" {
-  ami           = "ami-051f7e7f6c2f40dc1"  # Replace with the correct AMI ID
+  ami           = "ami-053b0d53c279acc90"  # Replace with the Ubuntu AMI ID
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public_subnet.id  # Specify the subnet here
-  key_name      = "north" 
+  key_name      = "north"
+  security_groups = [aws_security_group.ssh_sg.name]  # Attach the SSH security group
   tags = {
     Name = "TechnoaHI"
   }
 }
 
+# Output the public IP address of the EC2 instance for reference
+output "public_ip" {
+  value = aws_instance.TechnoaHI.public_ip
+}
