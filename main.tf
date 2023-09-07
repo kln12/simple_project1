@@ -62,6 +62,7 @@ resource "aws_route_table_association" "my_subnet_association" {
 
 # Launch an EC2 instance in the public subnet
 # Launch an EC2 instance in the public subnet
+# Launch an EC2 instance in the public subnet
 resource "aws_instance" "TechnoaHI" {
   ami           = "ami-053b0d53c279acc90"  # Replace with the Ubuntu AMI ID
   instance_type = "t2.micro"
