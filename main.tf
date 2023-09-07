@@ -40,7 +40,7 @@ resource "aws_security_group" "ssh_sg" {
 
 # Launch an EC2 instance in the public subnet
 resource "aws_instance" "my_instance" {
-  ami           = "ami-0c55b159cbfafe1f0"  # Change to your desired AMI ID
+  ami           = "ami-053b0d53c279acc90"  # Change to your desired AMI ID
   instance_type = "t2.micro"               # Change to your desired instance type
   subnet_id     = aws_subnet.public_subnet.id
   security_groups = [aws_security_group.ssh_sg.name]
