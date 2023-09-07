@@ -40,6 +40,7 @@ resource "aws_security_group" "ssh_sg" {
 }
 
 # Launch an EC2 instance in the public subnet
+# Launch an EC2 instance in the public subnet
 resource "aws_instance" "TechnoaHI" {
   ami           = "ami-053b0d53c279acc90"  # Replace with the Ubuntu AMI ID
   instance_type = "t2.micro"
@@ -50,6 +51,7 @@ resource "aws_instance" "TechnoaHI" {
     Name = "TechnoaHI"
   }
 }
+
 
 # Output the public IP address of the EC2 instance for reference
 output "public_ip" {
