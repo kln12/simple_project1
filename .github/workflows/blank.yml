@@ -1,0 +1,39 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and Push Backend Docker Image
+        env:
+          # Set environment variables for the backend, if needed
+        run: |
+          docker build -t backend-image ./backend
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker tag backend-image your-dockerhub-username/backend-image:latest
+          docker push your-dockerhub-username/backend-image:latest
+
+      - name: Build and Push Frontend Docker Image
+        env:
+          # Set environment variables for the frontend, if needed
+        run: |
+          docker build -t frontend-image ./frontend
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker tag frontend-image your-dockerhub-username/frontend-image:latest
+          docker push your-dockerhub-username/frontend-image:latest
+
+      - name: Deploy with Docker Compose
+        env:
+          # Set environment variables for Docker Compose and other configurations
+        run: |
+          docker-compose -f docker-compose.yml up -d
+
