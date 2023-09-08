@@ -73,7 +73,6 @@ resource "aws_instance" "TechnoaHI" {
   }
 }
 
-
 # Output the public IP address of the EC2 instance for reference
 output "public_ip" {
   value = aws_instance.TechnoaHI.public_ip
