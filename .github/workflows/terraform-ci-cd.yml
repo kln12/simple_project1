@@ -13,6 +13,48 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install Docker and Login
+        run: |
+          #!/bin/bash
+
+          # Check if Docker is already installed
+          if ! [ -x "$(command -v docker)" ]; then
+            echo "Docker is not installed. Installing Docker..."
+            
+            # Update package repositories
+            sudo apt update -y
+            
+            # Install required packages for Docker installation
+            sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+            
+            # Add Docker repository and GPG key
+            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+            echo "deb [signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+            
+            # Install Docker
+            sudo apt update -y
+            sudo apt install -y docker-ce docker-ce-cli containerd.io
+            
+            # Start and enable Docker service
+            sudo systemctl start docker
+            sudo systemctl enable docker
+            
+            echo "Docker has been successfully installed."
+          else
+            echo "Docker is already installed."
+          fi
+
+          # Prompt the user to log in to Docker (you can replace this with your own login command)
+          echo "Please log in to Docker using 'docker login' command."
+          docker login
+
+          # Check if Docker login was successful
+          if [ $? -eq 0 ]; then
+            echo "Docker login successful."
+          else
+            echo "Docker login failed. Please check your credentials."
+          fi
+
       - name: Set up AWS CLI
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
