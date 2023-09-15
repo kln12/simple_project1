@@ -3,4 +3,3 @@
 <file_path> filter=lfs diff=lfs merge=lfs -text
 .terraform/**/*exe filter=lfs diff=lfs merge=lfs -text
 *.jpg filter=lfs diff=lfs merge=lfs -text
-*.exe filter=lfs diff=lfs merge=lfs -text
