@@ -3,7 +3,7 @@ name: Terraform CI/CD
 on:
   push:
     branches:
-      - main  # Replace with your branch name
+      - main
 
 jobs:
   build:
@@ -20,18 +20,22 @@ jobs:
         run: |
           aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-          aws configure set region us-east-1  # Replace with your desired AWS region
+          aws configure set region us-east-1
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 1.0.0  # Replace with your desired Terraform version
+          terraform_version: 1.0.0
 
       - name: Initialize Terraform
         run: terraform init
 
-      - name: Plan
-        run: terraform plan -out=tfplan
+      - name: Check if Terraform Changes Needed
+        id: terraform-check
+        run: |
+          terraform plan -out=tfplan -detailed-exitcode || echo "Terraform changes needed"
+        continue-on-error: true
 
-      - name: Apply
+      - name: Apply Terraform Changes
+        if: steps.terraform-check.outputs.exitcode != 0
         run: terraform apply -auto-approve tfplan
