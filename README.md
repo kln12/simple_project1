@@ -6,4 +6,4 @@ im my case , i cp the fullstack application to ubuntu server
 install the Docker and Docker-compose  
 workdone around the docker images and containers,   
 if server is not access the web check the docker logs and change according that.  
-add the state file and lock file to create the infra idempoten
+add the state file and lock file to create the infra idempote
