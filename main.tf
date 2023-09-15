@@ -69,7 +69,7 @@ resource "aws_instance" "TechnoaHI" {
   key_name      = "north"
   security_groups = [aws_security_group.ssh_sg.id]  # Use security group ID
   tags = {
-    Name = "TechnoaHI"
+    Name = "kln"
   }
 }
 
