@@ -88,13 +88,6 @@ jobs:
           mv terraform.tfstate terraform_state/terraform.tfstate
           echo "::set-output name=state_file::./terraform_state"
         continue-on-error: true
-      - name: Save Terraform State File
-        if: steps.terraform-check.outputs.exitcode != 0
-        run: |
-         mkdir -p terraform_state
-          mv terraform.tfstate terraform_state/terraform.tfstate
-          echo "::set-output name=state_file::./terraform_state"
-        continue-on-error: true
 
       - name: Upload Terraform State
         if: steps.terraform-check.outputs.exitcode != 0
@@ -102,6 +95,7 @@ jobs:
         with:
           name: terraform-state
           path: ${{ steps.Save-Terraform-State.outputs.state_file }}
+      
       - name: Upload Terraform State and Configuration
         uses: actions/upload-artifact@v2
         with:
@@ -113,7 +107,3 @@ jobs:
             terraform.tfstate.backup
             terraform.tfvars
             variables.tf
-
-
-
-           
