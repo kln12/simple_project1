@@ -81,3 +81,17 @@ jobs:
       - name: Apply Terraform Changes
         if: steps.terraform-check.outputs.exitcode != 0
         run: terraform apply -auto-approve tfplan
+      - name: Save Terraform State File
+        if: steps.terraform-check.outputs.exitcode != 0
+        run: |
+          mkdir -p terraform_state
+          mv terraform.tfstate terraform_state/terraform.tfstate
+          echo "::set-output name=state_file::./terraform_state"
+        continue-on-error: true
+
+      - name: Upload Terraform State
+        if: steps.terraform-check.outputs.exitcode != 0
+        uses: actions/upload-artifact@v2
+        with:
+          name: terraform-state
+          path: ${{ steps.Save-Terraform-State.outputs.state_file }}
