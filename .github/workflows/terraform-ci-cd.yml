@@ -89,13 +89,14 @@ jobs:
           echo "::set-output name=state_file::./terraform_state"
         continue-on-error: true
 
+
       - name: Upload Terraform State
         if: steps.terraform-check.outputs.exitcode != 0
         uses: actions/upload-artifact@v2
         with:
           name: terraform-state
-          path: ${{ steps.Save-Terraform-State.outputs.state_file }}
-      
+          path: terraform_state/  # Upload the 'terraform_state' directory
+
       - name: Upload Terraform State and Configuration
         uses: actions/upload-artifact@v2
         with:
@@ -107,3 +108,4 @@ jobs:
             terraform.tfstate.backup
             terraform.tfvars
             variables.tf
+
