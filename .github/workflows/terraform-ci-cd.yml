@@ -80,7 +80,7 @@ jobs:
 
       - name: Apply Terraform Changes
         if: steps.terraform-check.outputs.exitcode != 0
-        run: terraform apply -auto-approve tfplan
+        run: terraform apply "tfplan"
       - name: Save Terraform State File
         if: steps.terraform-check.outputs.exitcode != 0
         run: |
