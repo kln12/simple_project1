@@ -95,10 +95,17 @@ jobs:
         with:
           name: terraform-state
           path: ${{ steps.Save-Terraform-State.outputs.state_file }}
-      - name: Upload Terraform State
+      - name: Upload Terraform State and Configuration
         uses: actions/upload-artifact@v2
         with:
-          name: terraform.tfstate
-          path: terraform.tfstate
+          name: terraform-artifacts
+          path: |
+              .terraform/
+              main.tf
+              terraform.tfstate
+              terraform.tfstate.backup
+              terraform.tfvars
+              variables.tf
+
 
            
