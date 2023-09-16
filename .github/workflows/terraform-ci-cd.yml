@@ -101,4 +101,6 @@ jobs:
           name: my-artifact  # Specify a name for the artifact
           path: | 
            - main.tf
+           - terraform.tfstate
+           - terraform.tfstate.backup
            
