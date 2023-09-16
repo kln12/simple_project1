@@ -95,3 +95,10 @@ jobs:
         with:
           name: terraform-state
           path: ${{ steps.Save-Terraform-State.outputs.state_file }}
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact  # Specify a name for the artifact
+          path: | 
+           - main.tf
+           
