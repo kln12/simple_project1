@@ -77,10 +77,10 @@ jobs:
         run: |
           terraform plan -out=tfplan -detailed-exitcode || echo "Terraform changes needed"
         continue-on-error: true
-
+  
       - name: Apply Terraform Changes
-        if: steps.terraform-check.outputs.exitcode != 0
         run: terraform apply "tfplan"
+
       - name: Save Terraform State File
         if: steps.terraform-check.outputs.exitcode != 0
         run: |
