@@ -98,7 +98,7 @@ jobs:
       - name: Upload Terraform State
         uses: actions/upload-artifact@v2
         with:
-          name: terraform-state
+          name: terraform.tfstate
           path: terraform.tfstate
 
            
